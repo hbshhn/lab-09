@@ -1,0 +1,47 @@
+name: Runner System Info
+
+on: 
+  push:
+    branches: [ main ]
+  workflow_dispatch: # Allows you to run this manually from the Actions tab
+
+jobs:
+  inspect-runner:
+    name: Audit Runner Environment
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Hardware & OS Information
+        run: |
+          echo "### Operating System ###"
+          lsb_release -a
+          uname -a
+          
+          echo -e "\n### CPU Architecture ###"
+          lscpu
+          
+          echo -e "\n### Memory (RAM) ###"
+          free -h
+
+      - name: Storage & File System
+        run: |
+          echo "### Disk Usage ###"
+          df -h
+          
+          echo -e "\n### Mounted Devices ###"
+          lsblk
+
+      - name: Software & Network
+        run: |
+          echo "### Installed Tools Versions ###"
+          python3 --version
+          docker --version
+          git --version
+          
+          echo -e "\n### Network Configuration ###"
+          ip addr
+          
+      - name: GitHub Environment Variables
+        run: |
+          echo "### Global Env Vars ###"
+          printenv | sort
